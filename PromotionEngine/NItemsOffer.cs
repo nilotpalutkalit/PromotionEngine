@@ -6,11 +6,13 @@ namespace PromotionEngine
 {
     public class NItemsOffer : IOffer
     {
-        List<LineItem> ItemsOnOffer { get; set; }
+        List<LineItem> ItemsOnOffer { get; set; } = new List<LineItem>();
 
         //Incase of NItems rule this list shall contain a single entry.
         //Each entry is a mandatory set of items for offer to complete
-        OfferRule offerDefinition { get; set; }
+        OfferRule offerDefinition { get; set; } = new OfferRule();
+        IItemDetailsProvider ItemDetailsProvider { get; set; }
+        CompaignDetails CompaignDetails { get; set; } = new CompaignDetails();
 
         public NItemsOffer()
         {
@@ -44,22 +46,35 @@ namespace PromotionEngine
 
         public List<LineItem> GetPromotionAppliedItems()
         {
-            throw new NotImplementedException();
+
+
+            return ItemsOnOffer;
         }
 
         public float GetTotalPriceAfterOffer()
         {
-            throw new NotImplementedException();
+            float price = 0.0f;
+            foreach (var items in ItemsOnOffer)
+            {
+                price += (items.Quantity % offerDefinition.QuantityToBuy) * CompaignDetails.Value;
+            }
+
+            return price;
+
         }
 
-        public void RegisterCompaign(IItemDetailsProvider provider)
+
+
+        public void RegisterProvider(IItemDetailsProvider provider)
         {
-            throw new NotImplementedException();
+            ItemDetailsProvider = provider;
         }
 
-        public void DefineOffer(List<OfferRule> offerRules)
+        public void DefineOffer(List<OfferRule> offerRules, float value)
         {
             offerDefinition = offerRules.FirstOrDefault();
+            CompaignDetails.Value = value;
+            CompaignDetails.Type = CompaignType.FlatPrice;
         }
     }
 }

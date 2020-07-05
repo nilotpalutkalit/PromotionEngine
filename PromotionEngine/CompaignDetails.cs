@@ -17,7 +17,7 @@ namespace PromotionEngine
         public float Value { get; set; }
 
         //offer can be discount offer or a flat price offer
-        CompaignType Type { get; set; }
+        public CompaignType Type { get; set; }
 
     }
 

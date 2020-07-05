@@ -8,7 +8,7 @@ namespace PromotionEngine
     {
 
 
-        void DefineOffer(List<OfferRule> offerRules);
+        void DefineOffer(List<OfferRule> offerRules, float value);
 
         //pass line items in the order
         bool ApplyOffer(List<LineItem> lineItems);
@@ -19,8 +19,8 @@ namespace PromotionEngine
         //returns the price after applying offer
         float GetTotalPriceAfterOffer();
 
-        //Sets the variable part of the offer i.e. price or discount percentage
-        void RegisterCompaign(IItemDetailsProvider provider);
+        //To fetch item price details etc.
+        void RegisterProvider(IItemDetailsProvider provider);
 
     }
 }
