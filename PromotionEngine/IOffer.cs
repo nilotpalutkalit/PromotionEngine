@@ -3,8 +3,12 @@ using System.Collections.Generic;
 
 namespace PromotionEngine
 {
+    
     public interface IOffer
     {
+
+
+        void DefineOffer(List<OfferRule> offerRules);
 
         //pass line items in the order
         bool ApplyOffer(List<LineItem> lineItems);
