@@ -13,10 +13,10 @@ namespace PromotionEngine
         List<LineItem> GetPromotionAppliedItems();
 
         //returns the price after applying offer
-        bool GetTotalPriceAfterOffer();
+        float GetTotalPriceAfterOffer();
 
         //Sets the variable part of the offer i.e. price or discount percentage
-        void RegisterCompaign(ICompaignProvider provider);
+        void RegisterCompaign(IItemDetailsProvider provider);
 
     }
 }

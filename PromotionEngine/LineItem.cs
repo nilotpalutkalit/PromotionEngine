@@ -9,6 +9,6 @@ namespace PromotionEngine
 
         public char ItemID { get; set; }
         public int Quantity { get; set; }
-        public bool OfferApplied { get; set; }
+
     }
 }
