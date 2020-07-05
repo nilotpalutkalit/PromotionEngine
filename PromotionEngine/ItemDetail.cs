@@ -6,5 +6,8 @@ namespace PromotionEngine
         public ItemDetail()
         {
         }
+
+        public char ItemID { get; set; }
+        public float price { get; set; }
     }
 }

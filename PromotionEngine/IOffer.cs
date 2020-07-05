@@ -6,9 +6,17 @@ namespace PromotionEngine
     public interface IOffer
     {
 
+        //pass line items in the order
         bool ApplyOffer(List<LineItem> lineItems);
+
+        //returns line items where offer is applicable after applying offer
         List<LineItem> GetPromotionAppliedItems();
+
+        //returns the price after applying offer
         bool GetTotalPriceAfterOffer();
+
+        //Sets the variable part of the offer i.e. price or discount percentage
+        void RegisterCompaign(ICompaignProvider provider);
 
     }
 }
