@@ -23,7 +23,7 @@ namespace PromotionEngine
             bool offerApplied = false;
             foreach (var eachLineItem in lineItems)
             {
-                if(eachLineItem.ItemID != offerDefinition.ItemIDToBuy)
+                if(eachLineItem.ItemID != offerDefinition.ItemIDToBuy || eachLineItem.OfferApplied)
                 {
                     continue;
                 }
@@ -37,6 +37,7 @@ namespace PromotionEngine
                 }
 
                 eachLineItem.Quantity = quantityOnOffer;
+                eachLineItem.OfferApplied = true;
                 ItemsOnOffer.Add(eachLineItem);
                 offerApplied = true;
             }

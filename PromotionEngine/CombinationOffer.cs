@@ -33,6 +33,11 @@ namespace PromotionEngine
                     return false;
                 }
 
+                if(order[itemsRequired.ItemIDToBuy].OfferApplied)
+                {
+                    return false;
+                }
+
                 int mf = order[itemsRequired.ItemIDToBuy].Quantity / itemsRequired.QuantityToBuy;
                 if(mf < 1)
                 {
@@ -54,6 +59,7 @@ namespace PromotionEngine
             {
                 LineItem offerItem = order[itemsRequired.ItemIDToBuy];
                 offerItem.Quantity = offerMultiplicationFactor * itemsRequired.QuantityToBuy;
+                offerItem.OfferApplied = true;
                 ItemsOnOffer.Add(offerItem);
             }
 
