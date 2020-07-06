@@ -30,17 +30,21 @@ namespace PromotionEngine
             {
                 if(!order.ContainsKey(itemsRequired.ItemIDToBuy))
                 {
+                    ItemsOnOffer.Clear();
                     return false;
                 }
 
                 if(order[itemsRequired.ItemIDToBuy].OfferApplied)
                 {
+
+                    ItemsOnOffer.Clear();
                     return false;
                 }
 
                 int mf = order[itemsRequired.ItemIDToBuy].Quantity / itemsRequired.QuantityToBuy;
                 if(mf < 1)
                 {
+                    ItemsOnOffer.Clear();
                     return false;
                 }
 
@@ -59,7 +63,6 @@ namespace PromotionEngine
             {
                 LineItem offerItem = order[itemsRequired.ItemIDToBuy];
                 offerItem.Quantity = offerMultiplicationFactor * itemsRequired.QuantityToBuy;
-                offerItem.OfferApplied = true;
                 ItemsOnOffer.Add(offerItem);
             }
 
@@ -78,7 +81,11 @@ namespace PromotionEngine
 
         public List<LineItem> GetPromotionAppliedItems()
         {
+            foreach(var eachItem in ItemsOnOffer)
+            {
 
+                eachItem.OfferApplied = true;
+            }
 
             return ItemsOnOffer;
         }

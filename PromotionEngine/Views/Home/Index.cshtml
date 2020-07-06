@@ -3,4 +3,15 @@
 }
 
 <div class="text-center">
+    Input format: ItemID Quantity seperated by new line.
+    <br/>
+    example:
+    <br/>
+    A 10<br/>
+    B 20
+    <form asp-controller="Home" asp-action="GetPriceDetails" method="post">
+        <textarea id="textarea"  name="orders" ></textarea> 
+        <input type = "submit" name="submit"/>
+
+        </form>
 </div>

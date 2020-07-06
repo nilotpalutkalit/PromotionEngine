@@ -10,7 +10,7 @@ namespace PromotionEngine
 
         //Incase of NItems rule this list shall contain a single entry.
         //Each entry is a mandatory set of items for offer to complete
-        OfferRule offerDefinition { get; set; } = new OfferRule();
+        OfferRule offerDefinition { get; set; }
         IItemDetailsProvider ItemDetailsProvider { get; set; }
         CompaignDetails CompaignDetails { get; set; } = new CompaignDetails();
 
@@ -24,6 +24,10 @@ namespace PromotionEngine
             foreach (var eachLineItem in lineItems)
             {
                 if(eachLineItem.ItemID != offerDefinition.ItemIDToBuy || eachLineItem.OfferApplied)
+                {
+                    continue;
+                }
+                if(eachLineItem.Quantity < offerDefinition.QuantityToBuy)
                 {
                     continue;
                 }
@@ -57,11 +61,11 @@ namespace PromotionEngine
             float price = 0.0f;
             foreach (var items in ItemsOnOffer)
             {
-                price += (items.Quantity % offerDefinition.QuantityToBuy) * CompaignDetails.Value;
+                price += (items.Quantity / offerDefinition.QuantityToBuy) * CompaignDetails.Value;
             }
 
             return price;
-
+            
         }
 
 

@@ -5,15 +5,48 @@ namespace PromotionEngine
 {
     public class PromotionEngineBL : IItemDetailsProvider
     {
-        public Dictionary<int, CompaignDetails> compaignDetails;
-        public Dictionary<int, IOffer> availableOffers;
-        public Dictionary<char, SaleLineItem> orders;
-        public Dictionary<char, ItemDetail> ItemDetails;
+        //public Dictionary<int, CompaignDetails> compaignDetails;
+        public Dictionary<int, IOffer> availableOffers = new Dictionary<int, IOffer>();
+        public Dictionary<char, SaleLineItem> orders = new Dictionary<char, SaleLineItem>();
+        public Dictionary<char, ItemDetail> ItemDetails = new Dictionary<char, ItemDetail>();
         //offer id and price
-        private Dictionary<int, float> PriceForItemsOnOffer;
+        private Dictionary<int, float> PriceForItemsOnOffer = new Dictionary<int, float>();
         
         public PromotionEngineBL()
         {
+            RegisterAllOffer();
+            RegisterItemDetails();
+        }
+
+        void RegisterAllOffer()
+        {
+            NItemsOffer offer1 = new NItemsOffer();
+            offer1.DefineOffer(new List<OfferRule> { new OfferRule('A', 3) }, 130.0f);
+            offer1.RegisterProvider(this);
+
+            NItemsOffer offer2 = new NItemsOffer();
+            offer2.DefineOffer(new List<OfferRule> { new OfferRule('B', 2) }, 45.0f);
+            offer2.RegisterProvider(this);
+
+            CombinationOffer offer3 = new CombinationOffer();
+            offer3.DefineOffer(new List<OfferRule> {
+                                                        new OfferRule('C', 1),
+                                                        new OfferRule('D', 1)
+                                                    }, 30.0f);
+            offer3.RegisterProvider(this);
+
+            RegisterOffer(offer1);
+            RegisterOffer(offer2);
+            RegisterOffer(offer3);
+
+        }
+
+        void RegisterItemDetails()
+        {
+            ItemDetails.Add('A', new ItemDetail('A', 50.0f));
+            ItemDetails.Add('B', new ItemDetail('B', 30.0f));
+            ItemDetails.Add('C', new ItemDetail('C', 20.0f));
+            ItemDetails.Add('D', new ItemDetail('D', 15.0f));
         }
 
         public void RegisterOffer(IOffer offer)
@@ -22,12 +55,12 @@ namespace PromotionEngine
             availableOffers.Add(id, offer);
         }
 
-        public int RegisterCompaign(CompaignDetails compaign)
-        {
-            var id = compaignDetails.Count + 1;
-            compaignDetails.Add(id, compaign);
-            return id;
-        }
+        //public int RegisterCompaign(CompaignDetails compaign)
+        //{
+        //    var id = compaignDetails.Count + 1;
+        //    compaignDetails.Add(id, compaign);
+        //    return id;
+        //}
 
         public float GetCheckoutPrice(List<LineItem> order)
         {
@@ -56,7 +89,7 @@ namespace PromotionEngine
             float totalPrice = 0.0f;
             foreach(var eachOrder in orders)
             {
-                totalPrice += ItemDetails[eachOrder.Key].price * eachOrder.Value.Quantity - eachOrder.Value.OfferAppliedQuantity;
+                totalPrice += ItemDetails[eachOrder.Key].Price * (eachOrder.Value.Quantity - eachOrder.Value.OfferAppliedQuantity);
             }
 
             foreach(var promotionItemPrice in PriceForItemsOnOffer)
@@ -64,12 +97,15 @@ namespace PromotionEngine
                 totalPrice += promotionItemPrice.Value;
             }
 
+            orders.Clear();
+            PriceForItemsOnOffer.Clear();
+
             return totalPrice;
         }
 
         public float GetItemPrice(char ID)
         {
-            return ItemDetails[ID].price;
+            return ItemDetails[ID].Price;
         }
     }
 }
